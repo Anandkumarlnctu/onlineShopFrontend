@@ -1,10 +1,26 @@
 import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { AuthService } from '../../../auth.service';
 
-@Component({ standalone: true, template: `
-<div class="container mt-4">
-  <h3>Login</h3>
-  <input class="form-control mb-2" placeholder="Email">
-  <input class="form-control mb-2" type="password" placeholder="Password">
-  <button class="btn btn-primary">Login</button>
-</div>`})
-export class LoginComponent {}
+
+@Component({
+  selector: 'app-login',
+  standalone: true,
+  imports: [RouterModule],   // ✅ REQUIRED
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']
+})
+export class LoginComponent {
+    email = '';
+  password = '';
+
+  constructor(private authService: AuthService) {}
+
+  login() {
+    this.authService.login({ email: this.email, password: this.password }).subscribe({
+      next: (res) => console.log('Login successful', res),
+      error: (err) => console.error('Login failed', err)
+    });
+  }
+}
+

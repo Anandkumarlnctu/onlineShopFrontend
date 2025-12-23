@@ -1,0 +1,12 @@
+
+.cart-item-quantity button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.cart-item-quantity button:hover {
+  background-color: #0056b3;
+}

@@ -1,0 +1,98 @@
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1050;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+
+body {
+  padding-top: 56px;
+}
+
+.navbar .navbar-brand {
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  color: #fff !important;
+  display: inline-flex;
+  align-items: center;
+}
+
+.navbar .d-flex.gap-3 a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.navbar .btn {
+  border-radius: 6px;
+  font-weight: 600;
+  padding: 0.35rem 0.75rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.navbar .btn-outline-light {
+  color: #e9ecef;
+  border-color: rgba(255,255,255,0.6);
+}
+
+.navbar .btn-outline-light:hover,
+.navbar .btn-outline-light:focus {
+  color: #212529;
+  background-color: #f8f9fa;
+  border-color: #f8f9fa;
+}
+
+.navbar .btn-outline-light.active {
+  color: #212529;
+  background-color: #e9ecef;
+  border-color: #e9ecef;
+}
+
+.navbar .btn.btn-warning {
+  color: #212529;
+  font-weight: 700;
+  border: none;
+}
+
+.navbar .btn.btn-warning:hover,
+.navbar .btn.btn-warning:focus {
+  filter: brightness(0.95);
+}
+
+.navbar .btn.btn-warning .badge {
+  background-color: #212529;
+  color: #fff;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  margin-left: 6px;
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+  .navbar .navbar-brand {
+    font-size: 1rem;
+  }
+  .navbar .btn {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.85rem;
+  }
+}
+
+.navbar .btn:focus-visible,
+.navbar .navbar-brand:focus-visible {
+  outline: 2px solid #0d6efd;
+  outline-offset: 2px;
+}
+
+.navbar a {
+  text-decoration: none;
+}

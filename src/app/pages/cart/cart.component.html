@@ -1,0 +1,55 @@
+
+<div class="cart-container">
+  <!-- Not logged in -->
+  <div *ngIf="!isLoggedIn">
+    <p>Please log in to view your cart.</p>
+  </div>
+
+  <!-- Logged in -->
+  <div *ngIf="isLoggedIn">
+    <h2>Your Cart</h2>
+
+    <!-- Loading & Error -->
+    <div *ngIf="loading">Loading cart...</div>
+    <div *ngIf="error" class="empty-cart">{{ error }}</div>
+
+    <!-- Empty cart -->
+    <div *ngIf="!loading && !error && cartItems.length === 0" class="empty-cart">
+      <p>Your cart is empty.</p>
+      <button class="btn-continue" routerLink="/products">Continue Shopping</button>
+    </div>
+
+    <!-- Cart items -->
+    <div *ngIf="!loading && !error && cartItems.length > 0" class="cart-items">
+      <div class="cart-item" *ngFor="let item of cartItems; trackBy: trackByItemId">
+        <img [src]="item.image" [alt]="item.name" />
+
+        <div class="cart-item-details">
+          <h3>{{ item.name }}</h3>
+          <p>{{ item.description }}</p>
+          <div class="item-price">{{ item.price | currency:'USD' }}</div>
+        </div>
+
+        <div class="cart-item-quantity">
+          <button (click)="updateQuantity(item.id, item.quantity - 1)">−</button>
+          <span>{{ item.quantity }}</span>
+          <button (click)="updateQuantity(item.id, item.quantity + 1)">+</button>
+        </div>
+
+        <button (click)="removeItem(item.id)">Remove</button>
+      </div>
+
+      <!-- Total -->
+      <div class="cart-total">
+        <h3>Total</h3>
+        <div class="total-price">{{ totalPrice | currency:'USD' }}</div>
+      </div>
+
+      <!-- Actions -->
+      <div class="cart-actions">
+        <button class="btn-checkout" (click)="clearCart()">Checkout</button>
+        <button class="btn-continue" routerLink="/products">Continue Shopping</button>
+      </div>
+    </div>
+  </div>
+</div>

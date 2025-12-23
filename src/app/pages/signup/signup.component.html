@@ -1,0 +1,129 @@
+
+<div class="signup-container">
+  <div class="card">
+    <h2>Create an Account</h2>
+
+    <!-- Social Signup Buttons -->
+    <div class="social-buttons">
+      <!-- Google button rendered dynamically by GIS -->
+      <div #googleBtn id="google-signin-btn"></div>
+
+      <!-- Apple button -->
+      <button class="apple-btn" type="button" (click)="appleSignup()">
+        Sign up with Apple
+      </button>
+    </div>
+
+    <div class="or">or</div>
+
+    <!-- Signup Form -->
+    <form (ngSubmit)="signup()" #signupForm="ngForm" novalidate>
+      <!-- Name -->
+      <div class="input-group">
+        <label for="name">Name</label>
+        <input
+          type="text"
+          id="name"
+          [(ngModel)]="user.name"
+          name="name"
+          required
+          minlength="2"
+          maxlength="50"
+          #name="ngModel"
+          placeholder="Enter your name"
+          autocomplete="name"
+        />
+        <div *ngIf="name.invalid && name.touched" class="error-message">
+          <div *ngIf="name.errors?.['required']">Name is required.</div>
+          <div *ngIf="name.errors?.['minlength']">Name must be at least 2 characters.</div>
+          <div *ngIf="name.errors?.['maxlength']">Name must be 50 characters or less.</div>
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div class="input-group">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          [(ngModel)]="user.email"
+          name="email"
+          required
+          email
+          #email="ngModel"
+          placeholder="Enter your email"
+          autocomplete="email"
+        />
+        <div *ngIf="email.invalid && email.touched" class="error-message">
+          <div *ngIf="email.errors?.['required']">Email is required.</div>
+          <div *ngIf="email.errors?.['email']">Invalid email format.</div>
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div class="input-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          [(ngModel)]="user.password"
+          name="password"
+          required
+          #password="ngModel"
+          (input)="checkPasswordStrength()"
+          placeholder="Enter your password"
+          autocomplete="new-password"
+        />
+        <div *ngIf="password.invalid && password.touched" class="error-message">
+          <div *ngIf="password.errors?.['required']">Password is required.</div>
+        </div>
+
+        <!-- Strength meter -->
+        <div class="password-strength">
+          <div class="password-bar" [ngClass]="passwordStrengthClass"></div>
+          <small class="hint">
+            Use upper, lower, number, special, and at least 8 characters.
+          </small>
+        </div>
+      </div>
+
+      <!-- Confirm Password -->
+      <div class="input-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <input
+          type="password"
+          id="confirmPassword"
+          [(ngModel)]="confirmPassword"
+          name="confirmPassword"
+          required
+          #confirmPasswordField="ngModel"
+          placeholder="Confirm your password"
+          autocomplete="new-password"
+        />
+        <div *ngIf="confirmPasswordField.invalid && confirmPasswordField.touched" class="error-message">
+          <div *ngIf="confirmPasswordField.errors?.['required']">Confirm Password is required.</div>
+        </div>
+        <div *ngIf="confirmPasswordField.touched && user.password !== confirmPassword" class="error-message">
+          Passwords do not match.
+        </div>
+      </div>
+
+      <!-- Messages -->
+      <p class="error-message" *ngIf="error">{{ error }}</p>
+      <p class="success-message" *ngIf="success">{{ success }}</p>
+
+      <!-- Submit -->
+      <button
+        type="submit"
+        class="primary-btn"
+        [disabled]="signupForm.invalid || user.password !== confirmPassword || !isPasswordStrong"
+      >
+        Create Account
+      </button>
+    </form>
+
+    <div class="footer">
+      Already have an account? <a href="/login">Log in</a>
+    </div>
+  </div>
+</div>

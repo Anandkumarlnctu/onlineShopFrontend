@@ -1,0 +1,145 @@
+
+/* General Styles */
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%; 
+  font-family: Arial, sans-serif;
+}
+
+.signup-container {
+  padding-top: 80px;  
+  padding-bottom: 20px;
+  height: 100%; 
+  display: flex;
+  justify-content: center; 
+  align-items: center;     
+  flex-direction: column;
+  background-color: #f4f4f9; 
+  overflow: auto; 
+}
+
+/* Signup Form Card */
+.card {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 450px;  /* Max width for the form */
+  text-align: center;
+}
+
+h2 {
+  font-size: 2rem;
+  margin-bottom: 15px;
+}
+
+p.subtitle {
+  font-size: 1rem;
+  color: #777;
+  margin-bottom: 20px;
+}
+
+/* Social Buttons */
+.social-buttons {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+
+#google-signin-btn {
+  display: inline-block;
+}
+
+.apple-btn {
+  padding: 10px;
+  width: 230px;              
+  height: 40px;              
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  background-color: #000;
+  color: white;
+  font-size: 0.95rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.or {
+  margin: 15px 0;
+  font-size: 1rem;
+  color: #777;
+}
+
+/* Input Fields Styling */
+.input-group {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.input-group label {
+  font-weight: bold;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-top: 5px;
+}
+
+/* Password Strength Meter */
+.password-strength {
+  margin-top: 6px;
+}
+.password-bar {
+  height: 6px;
+  border-radius: 4px;
+  background: #ddd;
+}
+.password-bar.weak { background: #e53935; }
+.password-bar.medium { background: #fb8c00; }
+.password-bar.strong { background: #43a047; }
+
+/* Submit Button Styling */
+.primary-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.primary-btn:hover {
+  background-color: #0056b3;
+}
+.primary-btn:disabled {
+  background-color: #a0c8f0;
+  cursor: not-allowed;
+}
+
+/* Success/Error Message Styling */
+.error-message,
+.success-message {
+  margin-top: 15px;
+  font-size: 1rem;
+}
+.error-message { color: #d32f2f; }
+.success-message { color: #2e7d32; }
+
+/* Footer link */
+.footer {
+  margin-top: 20px;
+}
+.footer a {
+  color: #007bff;
+  text-decoration: none;
+}
+.footer a:hover {
+  text-decoration: underline;
+}
