@@ -4,7 +4,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { AuthService } from '../../../auth.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -57,21 +57,21 @@ export class LoginComponent implements OnInit {
 
     const creds = this.loginForm.value; // { email, password }
 
-    this.authService.login(creds).subscribe({
-      next: (res) => {
-        console.log('Login successful', res);
-        this.success = 'Login successful ✅';
-        this.loginForm.reset();
-        this.router.navigate(['home']); // adjust path as needed
-      },
-      error: (err) => {
-        console.error('Login failed', err);
-        const apiMsg = err?.error?.message || err?.message;
-        this.error = apiMsg ? `Login failed: ${apiMsg}` : 'Login failed ❌';
-      },
-      complete: () => {
-        this.isSubmitting = false;
-      }
-    });
+    // this.authService.login(creds).subscribe({
+    //   next: (res) => {
+    //     console.log('Login successful', res);
+    //     this.success = 'Login successful ✅';
+    //     this.loginForm.reset();
+    //     this.router.navigate(['home']); // adjust path as needed
+    //   },
+    //   error: (err) => {
+    //     console.error('Login failed', err);
+    //     const apiMsg = err?.error?.message || err?.message;
+    //     this.error = apiMsg ? `Login failed: ${apiMsg}` : 'Login failed ❌';
+    //   },
+    //   complete: () => {
+    //     this.isSubmitting = false;
+    //   }
+    // });
   }
 }

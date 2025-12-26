@@ -1,10 +1,8 @@
-
-// src/app/signup/signup.component.ts
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
 import { Router, RouterModule } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-signup',
@@ -19,28 +17,25 @@ export class SignupComponent implements OnInit {
   error = '';
   success = '';
 
-  // Inject via functional inject() for standalone best practice
   private fb = inject(FormBuilder);
-  private http = inject(HttpClient);
+  private authService = inject(AuthService);
   private router = inject(Router);
 
   ngOnInit(): void {
     this.signupForm = this.fb.group({
-      fullname: [
+      name: [
         '',
         [
           Validators.required,
           Validators.minLength(2),
           Validators.maxLength(50),
-          // letters, spaces, hyphens, apostrophes
           Validators.pattern(/^[A-Za-z][A-Za-z\s\-’']{1,49}$/)
         ]
       ],
-      mobile: [
+      mobileNumber: [
         '',
         [
           Validators.required,
-          // 10 digits typical Indian mobile format, adjust if needed
           Validators.pattern(/^\d{10}$/)
         ]
       ],
@@ -56,16 +51,13 @@ export class SignupComponent implements OnInit {
         [
           Validators.required,
           Validators.minLength(8),
-          // at least one upper, one lower, one digit, one special
           Validators.pattern(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+={}\[\]|\\;:'",.<>\?/\-]).{8,}$/)
         ]
       ]
     });
   }
-
-  // Convenience getters for template
-  get fullname() { return this.signupForm.get('fullname'); }
-  get mobile() { return this.signupForm.get('mobile'); }
+  get name() { return this.signupForm.get('name'); }
+  get mobileNumber() { return this.signupForm.get('mobileNumber'); }
   get email() { return this.signupForm.get('email'); }
   get password() { return this.signupForm.get('password'); }
 
@@ -81,16 +73,19 @@ export class SignupComponent implements OnInit {
 
     this.isSubmitting = true;
 
-    // Adjust backend URL per your environment
-    const url = 'http://localhost:3000/signupUsers';
     const payload = this.signupForm.value;
 
-    this.http.post<any>(url, payload).subscribe({
+    this.authService.signUp(payload).subscribe({
       next: (res) => {
-        this.success = 'Signup successful ✅';
+        this.success = 'Please verify your email.';
+        
+        localStorage.setItem('email', this.email?.value);
+
         this.signupForm.reset();
-        // Navigate to login
-        this.router.navigate(['login']);
+
+        setTimeout(() => {
+          this.router.navigate(['otp']);
+        }, 2000);
       },
       error: (err) => {
         console.error('Signup error:', err);
