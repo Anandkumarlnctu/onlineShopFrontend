@@ -1,39 +1,29 @@
-<nav class="navbar">
-  <a class="navbar-brand" routerLink="/">ShopIn</a>
-  
-  <div class="navbar-search">
-    <input [value]="searchQuery" (input)="searchQuery = $event.target.value" type="text" placeholder="Search for products..." class="search-input" />
-    <button class="search-btn" (click)="onSearch()">Search</button>
-  </div>
+<nav class="navbar" [class.scrolled]="isScrolled">
+    <div class="container nav-content">
+        <a routerLink="/" class="brand">
+            <span class="brand-icon">🛍️</span>
+            <span class="brand-text">Luxecart</span>
+        </a>
 
-  <div class="navbar-links">
-    <a routerLink="/products" class="nav-link">Products</a>
-    <div class="dropdown">
-      <button class="dropbtn">Categories</button>
-      <div class="dropdown-content">
-        <a routerLink="/electronics">Electronics</a>
-        <a routerLink="/clothing">Clothing</a>
-        <a routerLink="/home-appliances">Home Appliances</a>
-        <a routerLink="/books">Books</a>
-      </div>
-    </div>
-    <a routerLink="/cart" class="nav-link cart-link">
-      <i class="cart-icon"></i> Cart ({{ cart.count() }})
-    </a>
+        <ul class="nav-links">
+            <li><a routerLink="/" class="nav-link">Home</a></li>
+            <li><a routerLink="/products" class="nav-link">Shop</a></li>
+            <li><a routerLink="/categories" class="nav-link">Categories</a></li>
+            <li><a routerLink="/about" class="nav-link">About</a></li>
+        </ul>
 
-    <ng-container *ngIf="!isLoggedIn">
-      <a routerLink="/login" class="nav-link">Login</a>
-      <a routerLink="/signup" class="nav-link">Signup</a>
-    </ng-container>
+        <div class="nav-actions">
+            <!-- Show when NOT authenticated -->
+            <ng-container *ngIf="!(isAuthenticated$ | async)">
+                <a routerLink="/login" class="btn-outline">Sign In</a>
+                <a routerLink="/signup" class="btn-primary">Get Started</a>
+            </ng-container>
 
-    <ng-container *ngIf="isLoggedIn">
-      <div class="dropdown">
-        <button class="dropbtn">Account</button>
-        <div class="dropdown-content">
-          <a routerLink="/profile">Profile</a>
-          <a (click)="logout()">Logout</a>
+            <!-- Show when authenticated -->
+            <ng-container *ngIf="isAuthenticated$ | async">
+                <a routerLink="/profile" class="btn-profile">Profile</a>
+                <button (click)="onLogout()" class="btn-logout">Logout</button>
+            </ng-container>
         </div>
-      </div>
-    </ng-container>
-  </div>
+    </div>
 </nav>

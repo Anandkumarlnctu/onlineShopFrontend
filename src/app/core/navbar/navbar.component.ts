@@ -1,32 +1,43 @@
 import { Component } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
-import { CartService } from '../../services/cart.service';
 import { CommonModule } from '@angular/common';
+import { Router, RouterModule } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterModule],
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css'] 
+  styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent {
-  searchQuery: string = '';
-  isLoggedIn: boolean = false;
+  isScrolled = false;
+  isAuthenticated$: Observable<boolean>;
 
-  constructor(public cart: CartService, private router: Router) {
-    this.isLoggedIn = !!localStorage.getItem('user');
-  }
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {
+    this.isAuthenticated$ = this.authService.isAuthenticated$;
 
-  onSearch() {
-    if (this.searchQuery.trim()) {
-      this.router.navigate(['/search'], { queryParams: { q: this.searchQuery } });
+    if (typeof window !== 'undefined') {
+      window.addEventListener('scroll', () => {
+        this.isScrolled = window.scrollY > 50;
+      });
     }
   }
 
-  logout() {
-    localStorage.removeItem('user');
-    this.isLoggedIn = false;
-    this.router.navigate(['/login']);
+  onLogout(): void {
+    this.authService.logout().subscribe({
+      next: (response: string) => {
+        alert(response || 'Logged out successfully!');
+        this.router.navigate(['/']);
+      },
+      error: (error: any) => {
+        console.error('Logout error:', error);
+        alert('Logout failed. Please try again.');
+      }
+    });
   }
 }

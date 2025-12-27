@@ -1,22 +1,16 @@
 import { Routes } from '@angular/router';
-import { LandingComponent } from './pages/landing/landing.component';
-import { LoginComponent } from './pages/login/login.component';
+import { LandingPageComponent } from './pages/landing-page/landing-page.component';
 import { SignupComponent } from './pages/signup/signup.component';
+import { OtpVerificationComponent } from './pages/otp-verification/otp-verification.component';
+import { LoginComponent } from './pages/login/login.component';
 import { ProductsComponent } from './pages/products/products.component';
-import { ProductDetailsComponent } from './pages/product-details/products-details.component';
-//import { CartComponent } from './pages/cart/cart.component';
-import { CheckoutComponent } from './pages/checkout/checkout.component';
-import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
-import { OtpVerificationComponent } from './pages/otp-verification/otp-verification';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
-  { path: '', component: LandingComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'signup', component: SignupComponent },
-  { path: 'otp', component: OtpVerificationComponent },
-  { path: 'forgot-password', component: ForgotPasswordComponent },
-  { path: 'products', component: ProductsComponent },
-  { path: 'product/:id', component: ProductDetailsComponent },
-  //{ path: 'cart', component: CartComponent },
-  { path: 'checkout', component: CheckoutComponent }
+    { path: '', component: LandingPageComponent },
+    { path: 'signup', component: SignupComponent },
+    { path: 'verify-otp', component: OtpVerificationComponent },
+    { path: 'login', component: LoginComponent },
+    { canActivate: [authGuard], path: 'products', component: ProductsComponent },
+    { canActivate: [authGuard], path: 'profile', loadComponent: () => import('./pages/profile/profile.component').then(m => m.ProfileComponent) }
 ];

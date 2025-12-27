@@ -1,0 +1,44 @@
+<div class="otp-container">
+    <div class="otp-card glass-panel">
+        <div class="otp-header">
+            <div class="icon-wrapper">
+                <span class="icon">📧</span>
+            </div>
+            <h1>Verify Your Email</h1>
+            <p>We've sent a verification code to<br><strong>{{ email }}</strong></p>
+        </div>
+
+        <form [formGroup]="otpForm" (ngSubmit)="onVerify()" class="otp-form">
+            <div class="form-group">
+                <label for="otp">Enter OTP</label>
+                <input type="text" id="otp" formControlName="otp" placeholder="Enter 6-digit code" maxlength="6"
+                    [class.error]="otpForm.get('otp')?.invalid && otpForm.get('otp')?.touched" />
+                <span class="error-message" *ngIf="otpForm.get('otp')?.invalid && otpForm.get('otp')?.touched">
+                    Please enter a valid 6-digit OTP
+                </span>
+            </div>
+
+            <div class="timer-section" *ngIf="timeRemaining > 0">
+                <span class="timer-icon">⏱️</span>
+                <span class="timer-text">Code expires in {{ formatTime(timeRemaining) }}</span>
+            </div>
+
+            <div class="expired-section" *ngIf="timeRemaining === 0">
+                <span class="expired-text">⚠️ OTP has expired</span>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-full" [disabled]="otpForm.invalid || isVerifying">
+                <span *ngIf="!isVerifying">Verify OTP</span>
+                <span *ngIf="isVerifying">Verifying...</span>
+            </button>
+        </form>
+
+        <div class="resend-section">
+            <p *ngIf="!canResend">Didn't receive the code? Wait {{ resendCooldown }}s</p>
+            <button *ngIf="canResend" class="btn-link" (click)="onResendOtp()" [disabled]="isResending">
+                <span *ngIf="!isResending">Resend OTP</span>
+                <span *ngIf="isResending">Sending...</span>
+            </button>
+        </div>
+    </div>
+</div>

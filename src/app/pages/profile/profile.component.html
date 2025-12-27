@@ -1,0 +1,53 @@
+<div class="profile-container">
+    <div class="container animate-fade-up">
+        <!-- User Overview Card -->
+        <div class="profile-card glass-panel loading" *ngIf="isLoading">
+            <div class="loader"></div>
+            <p>Loading profile...</p>
+        </div>
+
+        <div class="profile-card glass-panel" *ngIf="!isLoading && user">
+            <div class="profile-header">
+                <div class="avatar-circle">
+                    {{ getInitials(user.name) }}
+                </div>
+                <div class="user-info">
+                    <h1>{{ user.name }}</h1>
+                    <p class="email">{{ user.email }}</p>
+                    <span class="badge">Verified User</span>
+                </div>
+            </div>
+
+            <div class="profile-details">
+                <div class="detail-item">
+                    <span class="label">Mobile Number</span>
+                    <span class="value">{{ user.mobileNumber }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="label">Member Since</span>
+                    <span class="value">December 2025</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Error State -->
+        <div class="error-card glass-panel" *ngIf="error">
+            <p class="error-msg">{{ error }}</p>
+            <button (click)="loadProfile()" class="retry-btn">Retry</button>
+        </div>
+
+        <!-- Orders Section -->
+        <div class="orders-section">
+            <h2>My Orders</h2>
+            <div class="orders-list">
+                <!-- Empty State -->
+                <div class="empty-orders glass-panel">
+                    <span class="icon">📦</span>
+                    <h3>No orders yet</h3>
+                    <p>Start shopping to see your orders here!</p>
+                    <a routerLink="/products" class="shop-btn">Start Shopping</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

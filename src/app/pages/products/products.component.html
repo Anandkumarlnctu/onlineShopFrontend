@@ -1,27 +1,117 @@
-<!-- src/app/pages/products/products.component.html -->
-<div class="product-container">
-  <h2 class="product-header">Our Products</h2>
+<div class="products-container">
+    <div class="container">
+        <!-- Filters & Search Section -->
+        <div class="filter-bar glass-panel animate-fade-up">
+            <div class="search-wrapper">
+                <input type="text" [(ngModel)]="searchTerm" (input)="filterProducts()" placeholder="Search products..."
+                    class="search-input">
+                <span class="search-icon">🔍</span>
+            </div>
 
-  <!-- Loading State -->
-  <div *ngIf="loading" class="loading-spinner">
-    <span>Loading...</span>
-  </div>
+            <div class="filters-wrapper">
+                <div class="filter-group">
+                    <label>Category:</label>
+                    <select [(ngModel)]="selectedCategory" (change)="filterProducts()" class="filter-select">
+                        <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+                    </select>
+                </div>
 
-  <!-- Products List -->
-  <div *ngIf="!loading && products.length > 0" class="product-list">
-    <div class="product-card" *ngFor="let product of products">
-      <div class="product-card-body">
-        <img [src]="product.imageUrl" alt="{{ product.name }}" class="product-img">
-        <h5 class="product-name">{{ product.name }}</h5>
-        <p class="product-price">₹{{ product.price }}</p>
-        <p class="product-description">{{ product.description }}</p>
-        <a [routerLink]="['/product', product.id]" class="btn btn-primary">View Details</a>
-      </div>
+                <div class="filter-group">
+                    <label>Max Price: ₹{{ maxPrice }}</label>
+                    <input type="range" min="0" max="50000" step="1000" [(ngModel)]="maxPrice"
+                        (input)="filterProducts()" class="price-slider">
+                </div>
+            </div>
+        </div>
+
+        <!-- Products Grid -->
+        <div class="products-grid">
+            <div *ngFor="let product of filteredProducts" class="product-card glass-panel animate-fade-up"
+                (click)="openProductDetails(product)">
+                <div class="product-image-wrapper">
+                    <img [src]="product.imageUrl" [alt]="product.name" class="product-img">
+                    <span class="product-badge" *ngIf="product.stockQuantity > 0">In Stock</span>
+                    <span class="product-badge out-stock" *ngIf="product.stockQuantity === 0">Out of Stock</span>
+                </div>
+
+                <div class="product-info">
+                    <div class="product-meta">
+                        <span class="product-category">{{ product.category }}</span>
+                        <span class="product-rating">
+                            {{ getAverageRating(product.reviews) | number:'1.1-1' }} ⭐ ({{ product.reviews.length }})
+                        </span>
+                    </div>
+
+                    <h3>{{ product.name }}</h3>
+                    <p class="product-brand">by {{ product.brand }}</p>
+
+                    <div class="product-footer">
+                        <span class="product-price">₹{{ product.price }}</span>
+                        <button class="view-btn">View Details</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- No Results Message -->
+            <div *ngIf="filteredProducts.length === 0" class="no-results glass-panel">
+                <p>No products found matching your criteria.</p>
+                <button (click)="searchTerm=''; selectedCategory='All'; maxPrice=50000; filterProducts()"
+                    class="btn-link">Reset Filters</button>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <!-- Error state -->
-  <div *ngIf="!loading && products.length === 0" class="no-products">
-    <span>No products available at the moment.</span>
-  </div>
+    <!-- Product Details Modal -->
+    <div class="modal-backdrop" *ngIf="isModalOpen" (click)="closeModal()">
+        <div class="modal-content glass-panel" (click)="$event.stopPropagation()">
+            <button class="close-btn" (click)="closeModal()">×</button>
+
+            <div class="modal-grid" *ngIf="selectedProduct">
+                <div class="modal-image">
+                    <img [src]="selectedProduct.imageUrl" [alt]="selectedProduct.name">
+                </div>
+
+                <div class="modal-details">
+                    <div class="modal-header">
+                        <span class="modal-category">{{ selectedProduct.category }} / {{ selectedProduct.subCategory
+                            }}</span>
+                        <h2>{{ selectedProduct.name }}</h2>
+                        <p class="modal-brand">Brand: {{ selectedProduct.brand }}</p>
+                    </div>
+
+                    <div class="modal-price-row">
+                        <span class="modal-price">₹{{ selectedProduct.price }}</span>
+                        <span class="stock-status" [class.out]="selectedProduct.stockQuantity === 0">
+                            {{ selectedProduct.stockQuantity > 0 ? 'In Stock (' + selectedProduct.stockQuantity + ')' :
+                            'Out of Stock' }}
+                        </span>
+                    </div>
+
+                    <p class="modal-description">{{ selectedProduct.description }}</p>
+
+                    <div class="modal-actions">
+                        <button class="add-cart-btn-large" [disabled]="selectedProduct.stockQuantity === 0">
+                            {{ selectedProduct.stockQuantity > 0 ? 'Add to Cart' : 'Unavailable' }}
+                        </button>
+                    </div>
+
+                    <!-- Reviews Section -->
+                    <div class="reviews-section">
+                        <h3>Reviews ({{ selectedProduct.reviews.length }})</h3>
+                        <div class="reviews-list" *ngIf="selectedProduct.reviews.length > 0">
+                            <div class="review-item" *ngFor="let review of selectedProduct.reviews">
+                                <div class="review-header">
+                                    <span class="reviewer-name">{{ review.userName }}</span>
+                                    <span class="review-rating">{{ getRatingStars(review.rating) }}</span>
+                                </div>
+                                <p class="review-comment">{{ review.comment }}</p>
+                                <span class="review-date">{{ review.date }}</span>
+                            </div>
+                        </div>
+                        <p *ngIf="selectedProduct.reviews.length === 0" class="no-reviews">No reviews yet.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
